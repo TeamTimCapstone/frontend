@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import './App.css';
+import axios from 'axios'; // Import axios for making HTTP requests
+
 
 function App() {
   const [splitView, setSplitView] = useState(false);
-  const [link, setLink] = useState('');
+  const [inputText, setInputText] = useState('');
   const [report, setReport] = useState('');
   const [reportGenerated, setReportGenerated] = useState(false);
 
@@ -15,20 +17,26 @@ function App() {
     event.preventDefault();
     
     try {
-      const response = await fetch('http://3.145.71.136',{
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ link })
+      //const articleResponse = await axios.get(link);
+      //const articleText = articleResponse.data;
+
+      const response = await fetch('http://18.191.129.165:5000/biasdetector', {
+         method: 'POST', // Ensure you're sending a POST request
+         headers: {
+         'Content-Type': 'application/json'
+         },
+        //body: JSON.stringify({ link })
+        //articleText: articleText
+        body: JSON.stringify({text: inputText})
       });
- 
+  
       if (!response.ok) {
         throw new Error('Failed to generate report');
       }
  
       const data = await response.json();
-      console.log('Report:', data.output);
-      setReport(data.output);
+      console.log('Report:', data.result);
+      setReport(data.result);
       // Set report generated to true after receiving the report data
       setReportGenerated(true);
     } catch (error) {
@@ -60,8 +68,8 @@ function App() {
         <input 
         className='inputlink' 
         type="text" 
-        value={link}
-        onChange={(e) => setLink(e.target.value)} placeholder="paste link" />
+        value={inputText}
+        onChange={(e) => setInputText(e.target.value)} placeholder="paste text" />
         <button className='startbutton' onClick={toggleSplitView}>get started</button>
         </form>
       </div>
