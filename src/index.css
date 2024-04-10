@@ -70,11 +70,28 @@ body, html {
   backdrop-filter: blur(10px);
   border-top-left-radius: 30px;
   width: 0; /* Default to zero width */
+  overflow-y: auto;
 }
-.report-container {
-  height: 80vh; /* Set a fixed height, adjust as needed */
-  overflow: overlay; /* Enable vertical scrolling when content exceeds the height */
+.right-side::-webkit-scrollbar {
+  width: 10px; /* Set the width of the scrollbar */
+  height: 40px;
 }
+
+.right-side::-webkit-scrollbar-track {
+  background: none; /* Hide the scrollbar track/background */
+}
+
+/* Customize the scrollbar thumb */
+.right-side::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+}
+
+/* Hide the scrollbar corner */
+.right-side::-webkit-scrollbar-corner {
+  display: none; /* Hide the scrollbar corner */
+}
+
 
 .close-button {
   position: absolute; 
@@ -142,7 +159,7 @@ form{
   height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   background: #000;
 }
 .wave {

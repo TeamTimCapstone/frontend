@@ -15,7 +15,7 @@ function App() {
     event.preventDefault();
   
     try {
-      const response = await fetch('http://18.221.226.188:5000/biasdetector', {
+      const response = await fetch('http://3.143.218.84:5000/biasdetector', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -63,7 +63,6 @@ function App() {
         </div>
         {splitView &&(
         <div className='right-side'>
-        <div className="report-container">
         <button className="close-button" onClick={toggleSplitView}>x</button>
         {!reportGenerated && (
         <div className='generating'>
@@ -103,7 +102,6 @@ function App() {
         </ul>  
       </>
           )}
-        </div>
         </div>
       )}
       </div>
