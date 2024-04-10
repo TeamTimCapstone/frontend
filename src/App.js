@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
+import axios from 'axios'; // Import axios for making HTTP requests
+
 
 function App() {
   const [splitView, setSplitView] = useState(false);
@@ -62,6 +64,7 @@ function App() {
           </form>
         </div>
         {splitView &&(
+
         <div className='right-side'>
         <div className="report-container">
         <button className="close-button" onClick={toggleSplitView}>x</button>
