@@ -13,23 +13,23 @@ function App() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     try {
-      const response = await fetch('http://3.133.111.135:5000/biasdetector', {
-        method: 'POST', // Make sure to specify the method
+      const response = await fetch('http://18.221.226.188:5000/biasdetector', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ text: link }) // Send 'link' as 'text' in the request body
+        body: JSON.stringify({ text: link })
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to generate report');
       }
-
+  
       const data = await response.json();
-      console.log('Report:', data.output);
-      setReport(data.output);
+      console.log('Data received from server:', data);
+      setReport(data); // Store the entire data object received from the server
       setReportGenerated(true);
     } catch (error) {
       console.error('Error:', error.message);
@@ -61,20 +61,51 @@ function App() {
             <button className='startbutton' onClick={toggleSplitView}>get started</button>
           </form>
         </div>
-        {splitView && (
-          <div className='right-side'>
-            <button className="close-button" onClick={toggleSplitView}>x</button>
-            {reportGenerated ? (
-              <>
-                <h2>Report Generated</h2>
-                <pre>{report}</pre>
-              </>
-            ) : (
-              <h2>Generating Report</h2>
-            )}
-          </div>
-        )
-        }
+        {splitView &&(
+        <div className='right-side'>
+        <div className="report-container">
+        <button className="close-button" onClick={toggleSplitView}>x</button>
+        {!reportGenerated && (
+        <div className='generating'>
+        <h2>Generating Report</h2>
+        <div class="center">
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+          <div class="wave"></div>
+        </div>
+        </div>
+        )}
+        {reportGenerated && report && (
+        <>
+        <h2>Report Generated</h2>
+        <p>Label: {report.label}</p>
+        <p>Article URL: <a href={report.article_url}>{report.article_url}</a></p>
+        <p>Article Bias Confidence: {report.article_bias_confidence}</p>
+        <p>Biased Sentence Count: {report.biased_sentence_count}</p>
+        <h3>Biased Sentences:</h3>
+        <ul>
+          {report.bias_info_by_sentence.map((sentence, index) => (
+            <li key={index}>
+              <p>Sentence: {sentence.text}</p>
+              <p>Sentence Bias Confidence: {sentence.sentence_bias_confidence}</p>
+              {sentence.biased_words && (
+                <p>Biased Words: {sentence.biased_words.join(', ')}</p>
+              )}
+            </li>
+          ))}
+        </ul>  
+      </>
+          )}
+        </div>
+        </div>
+      )}
       </div>
     </div>
   );
